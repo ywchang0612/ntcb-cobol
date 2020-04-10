@@ -1,0 +1,87 @@
+
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-12-07  21:16:59    Page 1
+Source file: TEST13.CBL                 Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN
+
+    1                     IDENTIFICATION DIVISION.
+    2                     PROGRAM-ID.    TEST13.
+    3                     AUTHOR.        S9456043.
+    4                     ENVIRONMENT DIVISION.
+    5                     CONFIGURATION SECTION.
+    6
+    7                     DATA DIVISION.
+    8                     WORKING-STORAGE SECTION.
+    9                     77 I PIC 99.
+   10                     77 B PIC 9(4).
+   11                     77 F PIC 99.
+   12                     77 WAIT PIC X.
+   13                     01 TABLE1.
+   14                        02 AA OCCURS 12 TIMES.
+   15                           05 FILLER PIC X(19) VALUE "12220119CAPRICORN".
+   16                           05 FILLER PIC X(19) VALUE "01200218AQUARIUS".
+   17                           05 FILLER PIC X(19) VALUE "02190320PISCES".
+   18                           05 FILLER PIC X(19) VALUE "03210419ARIES".
+   19                           05 FILLER PIC X(19) VALUE "04200520TAURUS".
+   20                           05 FILLER PIC X(19) VALUE "05210620GEMINI".
+   21                           05 FILLER PIC X(19) VALUE "06210722CANCER".
+   22                           05 FILLER PIC X(19) VALUE "07230822LEO".
+   23                           05 FILLER PIC X(19) VALUE "08230922VIROG".
+   24                           05 FILLER PIC X(19) VALUE "09231022LIBRA".
+   25                           05 FILLER PIC X(19) VALUE "10231121SCORPIO".
+   26                           05 FILLER PIC X(19) VALUE "11221221SAGITTARIUS".
+   27                     01 TABEL2 REDEFINES TABLE1.
+   28                        02 AB OCCURS 12 TIMES.
+   29                           05 ZODIC-B PIC 9(4).
+   30                           05 ZODIC-E PIC 9(4).
+   31                           05 ZODIC-N PIC X(11).
+   32
+   33                     PROCEDURE DIVISION.
+   34
+   35    000002           0000.
+   36    000005               DISPLAY " " LINE 1 POSITION 1 ERASE.
+   37    000020               DISPLAY "Please keyin your birthday" LINE 10 POSITION 15.
+   38    000034               DISPLAY "(SAMPLE:0101)" LINE 11 POSITION 15.
+   39    000048               ACCEPT B NO BEEP LINE 12 POSITION 15.
+   40
+   41    000060               PERFORM 2000 VARYING I FROM 2 BY 1 UNTIL I > 12.
+   42    000082               PERFORM 3000 UNTIL F = 27.
+   43    000095               STOP RUN.
+   44    000098           2000.
+   45    000101               IF B NOT < ZODIC-B(I) AND B NOT > ZODIC-E(I)
+   46                            DISPLAY ZODIC-N(I) LINE 18 POSITION 15
+   47                            PERFORM 3000
+   48                         ELSE
+   49                            DISPLAY ZODIC-N(1) LINE 18 POSITION 15
+   50                         END-IF.
+   51
+   52    000168           3000.
+   53    000171               DISPLAY "CONTINUE?(ESC = EXIT , PRESS ANY KEY CAN CONTINUE)"
+   54                         LINE 22 POSITION 15.
+   55    000185               ACCEPT WAIT NO BEEP ON EXCEPTION F NEXT SENTENCE.
+   56    000196               IF F NOT = 27
+   57                            GO TO 0000
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-12-07  21:16:59    Page 2
+Source file: TEST13.CBL                 Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN   TEST13
+
+   58                         END-IF.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-12-07  21:16:59    Page 3
+Source file: TEST13.CBL                 Options: L
+
+Program Summary Statistics                                                                           TEST13
+
+
+Read only size:                     666 (X"0000029A") bytes
+Read/write size:                   2776 (X"00000AD8") bytes
+Overlayable segment size:             0 (X"00000000") bytes
+
+Total generated object size:       3442 (X"00000D72") bytes
+
+Errors: 0, Warnings: 0, Lines: 58 for program TEST13.
+
+
+
+Object version level: 6
+

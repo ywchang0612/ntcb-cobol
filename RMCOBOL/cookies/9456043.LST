@@ -1,0 +1,104 @@
+
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    05-05-07  14:39:20    Page 1
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN
+
+    1                    ID      DIVISION.
+    2                    PROGRAM-ID. 'WORK-I'.
+    3
+    4                    ENVIRONMENT DIVISION.
+    5                    CONFIGURATION   SECTION.
+    6                    INPUT-OUTPUT    SECTION.
+    7                    FILE-CONTROL.
+    8                        SELECT FILE-RECORD ASSIGN TO RANDOM 'STOCK.DAT'
+    9                        ORGANIZATION IS LINE SEQUENTIAL.
+   10                        SELECT REPORT-RECORD ASSIGN TO RANDOM 'W.OUT'
+   11                        ORGANIZATION IS LINE SEQUENTIAL.
+   12                    DATA        DIVISION.
+   13                    FILE        SECTION.
+   14                    FD FILE-RECORD
+   15                        LABEL RECORD STANDARD.
+   16                    01 INPUT-RECORD.
+   17                        02 IN-NO    PIC X(4).
+   18                        02 IN-NM    PIC X(8).
+   19                        02 IN-UN    PIC X(2).
+   20                        02 IN-COST  PIC 9(3).
+   21                        02 IN-PRICE PIC 9(3).
+   22                        02 IN-QTY   PIC 9(3).
+   23                        02 IN-DATE.
+   24                           03 IN-YEAR   PIC 9(2).
+   25                           03 IN-MONTH  PIC 9(2).
+   26                           03 IN-DAY    PIC 9(2).
+   27                        02 IN-SAFE  PIC 9(3).
+   28                    FD REPORT-RECORD
+   29                        LABEL RECORD STANDARD.
+   30                    01 OUTPUT-RECORD PIC X(80).
+   31
+   32                    WORKING-STORAGE SECTION.
+   33                    77 EOF      PIC 9 VALUE 0.
+   34                    01 OUTPUT-LIST.
+   35                        02 OUT-NO   PIC X(4).
+   36                        02 FILLER   PIC X(4) VALUE SPACE.
+   37                        02 OUT-NM   PIC X(8).
+   38                        02 FILLER   PIC X(4) VALUE SPACE.
+   39                        02 QTY-R.
+   40                           03 OUT-QTY   PIC 9(3).
+   41                           03 OUT-UN    PIC X(2).
+   42                        02 FILLER   PIC X(4) VALUE SPACE.
+   43                        02 COST-R.
+   44                           03 OUT-COST  PIC 9(3).
+   45                           03 FILLER    PIC X(3) VALUE 'д╕/'.
+   46                           03 OUT-UN-2  PIC X(2).
+   47                        02 FILLER   PIC X(4) VALUE SPACE.
+   48                        02 YEAR-R.
+   49                           03 OUT-YEAR  PIC 9(2).
+   50                           03 FILLER    PIC X(2) VALUE 'ж~'.
+   51                        02 FILLER   PIC X(4) VALUE SPACE.
+   52                        02 MONTH-R.
+   53                           03 OUT-MONTH PIC 9(2).
+   54                           03 FILLER    PIC X(2) VALUE 'ды'.
+   55
+   56                    PROCEDURE DIVISION.
+   57    000002          0000-RTN.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    05-05-07  14:39:20    Page 2
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN   WORK-I
+
+   58    000005              OPEN INPUT FILE-RECORD
+   59                             OUTPUT REPORT-RECORD.
+   60    000018              READ FILE-RECORD AT END MOVE 1 TO EOF.
+   61    000033              PERFORM 0001-RTN UNTIL EOF = 1.
+   62    000046              CLOSE FILE-RECORD REPORT-RECORD.
+   63    000059              STOP RUN.
+   64
+   65    000062          0001-RTN.
+   66    000065              MOVE IN-NO TO OUT-NO
+   67    000072              MOVE IN-NM TO OUT-NM
+   68    000079              MOVE IN-QTY TO OUT-QTY
+   69    000086              MOVE IN-UN TO OUT-UN
+   70    000093              MOVE IN-COST TO OUT-COST
+   71    000100              MOVE IN-UN TO OUT-UN-2
+   72    000107              MOVE IN-YEAR TO OUT-YEAR
+   73    000114              MOVE IN-MONTH TO OUT-MONTH
+   74    000121              WRITE OUTPUT-RECORD FROM OUTPUT-LIST
+   75    000135              READ FILE-RECORD AT END MOVE 1 TO EOF.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    05-05-07  14:39:20    Page 3
+Source file: 9456043                    Options: L
+
+Program Summary Statistics                                                                           WORK-I
+
+
+Read only size:                     474 (X"000001DA") bytes
+Read/write size:                    472 (X"000001D8") bytes
+Overlayable segment size:             0 (X"00000000") bytes
+
+Total generated object size:        946 (X"000003B2") bytes
+
+Errors: 0, Warnings: 0, Lines: 75 for program WORK-I.
+
+
+
+Object version level: 1
+

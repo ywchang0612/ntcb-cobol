@@ -1,0 +1,164 @@
+
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-26-07  00:46:57    Page 1
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN
+
+    1                    ID      DIVISION.
+    2                    PROGRAM-ID. 'WORK-IIII'.
+    3
+    4                    ENVIRONMENT DIVISION.
+    5                    CONFIGURATION   SECTION.
+    6                    INPUT-OUTPUT    SECTION.
+    7                    FILE-CONTROL.
+    8                        SELECT SALE-FILE ASSIGN TO RANDOM 'SALES.DAT'
+    9                            ORGANIZATION IS LINE SEQUENTIAL.
+   10                        SELECT OUT-FILE ASSIGN TO RANDOM 'OUT.OUT'
+   11                            ORGANIZATION IS LINE SEQUENTIAL.
+   12                    DATA    DIVISION.
+   13                    FILE    SECTION.
+   14                    FD  SALE-FILE.
+   15                    01 SALE-RECORD.
+   16                       11 SALE-DATE.
+   17                          21 SALE-YEAR  PIC 9(2).
+   18                          21 SALE-MONTH PIC 9(2).
+   19                          21 SALE-DAY   PIC 9(2).
+   20                       11  SALE-NO      PIC X(3).
+   21                       11 PRO-NO        PIC 9(4).
+   22                       11 PRO-PRICE     PIC 9(4).
+   23                       11 PRO-QTY       PIC 9(4).
+   24                       11 SALESMAN      PIC 9(4).
+   25                    FD  OUT-FILE.
+   26                    01 FILE-RECORD      PIC X(60).
+   27                    WORKING-STORAGE SECTION.
+   28                    01 WORK-AREA.
+   29                       05 EOF       PIC 9 VALUE 0.
+   30                       05 CHECK-YEAR    PIC 9(2).
+   31                       05 CHECK-MONTH   PIC 9(2).
+   32                       05 CHECK-DAY     PIC 9(2).
+   33                       05 TOTAL-MONTH   PIC 9(6).
+   34                       05 TOTAL-DAY     PIC 9(6).
+   35                       05 TOTAL-ALL     PIC 9(6).
+   36
+   37                    01 OUT-RECORD.
+   38                       02 FILLER    PIC X(6) VALUE SPACE.
+   39                       02 OUT-DATE.
+   40                          03 OUT-YEAR   PIC 9(2)/.
+   41                          03 OUT-MONTH  PIC 9(2)/.
+   42                          03 OUT-DAY    PIC 9(2).
+   43                       02 FILLER    PIC X(6) VALUE SPACE.
+   44                       02 OUT-NO    PIC 9(4).
+   45                       02 FILLER    PIC X(10).
+   46                       02 OUT-QTY   PIC 9(6).
+   47                       02 FILLER    PIC X(20).
+   48
+   49                    01 HEAD-1.
+   50                       15 FILLER    PIC X(23) VALUE SPACE.
+   51                       15 FILLER    PIC X(14) VALUE '北　青　公　司'.
+   52                       15 FILLER    PIC X(13) VALUE SPACE.
+   53                    01 HEAD-2.
+   54                       15 FILLER    PIC X(23) VALUE SPACE.
+   55                       15 FILLER    PIC X(14) VALUE '銷　售　報　表'.
+   56                       15 FILLER    PIC X(23) VALUE SPACE.
+   57                    01 HEAD-3.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-26-07  00:46:57    Page 2
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN   WORK-IIII
+
+   58                       15 FILLER    PIC X(6) VALUE SPACE.
+   59                       15 FILLER    PIC X(8) VALUE '銷售日期'.
+   60                       15 FILLER    PIC X(6) VALUE SPACE.
+   61                       15 FILLER    PIC X(8) VALUE '產品編表'.
+   62                       15 FILLER    PIC X(6) VALUE SPACE.
+   63                       15 FILLER    PIC X(8) VALUE '銷售數量'.
+   64                       15 FILLER    PIC X(6) VALUE SPACE.
+   65                       15 FILLER    PIC X(4) VALUE '備註'.
+   66                       15 FILLER    PIC X(8) VALUE SPACE.
+   67                    01 HEAD-4.
+   68                       15 FILLER    PIC X(60) VALUE ALL '='.
+   69                    01 M-TOTAL-LINE.
+   70                       15 FILLER    PIC X(6) VALUE SPACE.
+   71                       15 M-YEAR    PIC 9(2)/.
+   72                       15 M-MONTH   PIC 9(2).
+   73                       15 FILLER    PIC X(6) VALUE SPACE.
+   74                       15 FILLER    PIC X(14) VALUE '  月銷售數量'.
+   75                       15 FILLER    PIC X(3) VALUE SPACE.
+   76                       15 M-TOTAL   PIC 9(6).
+   77                       15 FILLER    PIC X(2) VALUE '**'.
+   78                    01 TOTAL-LINE.
+   79                       15 FILLER    PIC X(19).
+   80                       15 FILLER    PIC X(10) VALUE '總銷售數量'.
+   81                       15 FILLER    PIC X(5) VALUE SPACE.
+   82                       15 TOTAL-A   PIC 9(6).
+   83                    PROCEDURE   DIVISION.
+   84    000002          0000-RTN.
+   85    000005              OPEN INPUT  SALE-FILE
+   86                         OUTPUT OUT-FILE.
+   87    000018              PERFORM HEADING-RTN.
+   88    000021              PERFORM 0001-RTN.
+   89    000024              PERFORM 0002-RTN UNTIL EOF = 1.
+   90    000036              PERFORM SUM-RTN.
+   91    000039              PERFORM FOOTING-RTN.
+   92    000042              CLOSE SALE-FILE OUT-FILE.
+   93    000055              STOP RUN.
+   94    000058          0001-RTN.
+   95    000061              READ SALE-FILE AT END MOVE 1 TO EOF.
+   96    000076              MOVE SALE-YEAR  TO CHECK-YEAR.
+   97    000084              MOVE SALE-MONTH TO CHECK-MONTH.
+   98    000091              MOVE SALE-DAY   TO CHECK-DAY.
+   99    000100          0002-RTN.
+  100    000103              IF SALE-MONTH NOT = CHECK-MONTH
+  101                        PERFORM SUM-RTN.
+  102    000115              MOVE SALE-YEAR TO OUT-YEAR.
+  103    000121              MOVE SALE-MONTH TO OUT-MONTH.
+  104    000126              MOVE SALE-DAY TO OUT-DAY.
+  105    000133              MOVE PRO-NO TO OUT-NO.
+  106    000140              MOVE PRO-QTY TO OUT-QTY.
+  107    000145              ADD OUT-QTY TO TOTAL-MONTH.
+  108    000151              ADD OUT-QTY TO TOTAL-ALL.
+  109    000157              WRITE FILE-RECORD FROM OUT-RECORD.
+  110    000170              READ SALE-FILE AT END MOVE 1 TO EOF.
+  111    000187          HEADING-RTN.
+  112    000190              WRITE FILE-RECORD FROM SPACE.
+  113    000202              WRITE FILE-RECORD FROM HEAD-1.
+  114    000216              WRITE FILE-RECORD FROM SPACE.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-26-07  00:46:57    Page 3
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN   WORK-IIII
+
+  115    000228              WRITE FILE-RECORD FROM HEAD-2.
+  116    000241              WRITE FILE-RECORD FROM SPACE.
+  117    000253              WRITE FILE-RECORD FROM HEAD-3.
+  118    000266              WRITE FILE-RECORD FROM HEAD-4.
+  119    000281          SUM-RTN.
+  120    000284              MOVE CHECK-YEAR TO M-YEAR.
+  121    000289              MOVE CHECK-MONTH TO M-MONTH.
+  122    000296              MOVE TOTAL-MONTH TO M-TOTAL.
+  123    000303              WRITE FILE-RECORD FROM M-TOTAL-LINE.
+  124    000317              MOVE SALE-MONTH TO CHECK-MONTH.
+  125    000324              MOVE SALE-DAY   TO CHECK-DAY.
+  126    000331              MOVE ZERO TO TOTAL-MONTH.
+  127    000339          FOOTING-RTN.
+  128    000342              MOVE TOTAL-ALL TO TOTAL-A.
+  129    000349              WRITE FILE-RECORD FROM TOTAL-LINE.
+  130    000363              WRITE FILE-RECORD FROM HEAD-4.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-26-07  00:46:57    Page 4
+Source file: 9456043                    Options: L
+
+Program Summary Statistics                                                                           WORK-IIII
+
+
+Read only size:                     798 (X"0000031E") bytes
+Read/write size:                    820 (X"00000334") bytes
+Overlayable segment size:             0 (X"00000000") bytes
+
+Total generated object size:       1618 (X"00000652") bytes
+
+Errors: 0, Warnings: 0, Lines: 130 for program WORK-IIII.
+
+
+
+Object version level: 1
+

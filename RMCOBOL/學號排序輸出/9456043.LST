@@ -1,0 +1,77 @@
+
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-10-07  22:28:33    Page 1
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN
+
+    1                    ID      DIVISION.
+    2                    PROGRAM-ID. 'WORK-III'.
+    3
+    4                    ENVIRONMENT DIVISION.
+    5                    CONFIGURATION   SECTION.
+    6                    INPUT-OUTPUT    SECTION.
+    7                    FILE-CONTROL.
+    8                        SELECT A-CLASS-F ASSIGN TO RANDOM 'CLASS-A.DAT'
+    9                        ORGANIZATION IS LINE SEQUENTIAL.
+   10                        SELECT B-CLASS-F ASSIGN TO RANDOM 'CLASS-B.DAT'
+   11                        ORGANIZATION IS LINE SEQUENTIAL.
+   12                        SELECT NEW-F ASSIGN TO RANDOM 'CLASS-F.OUT'
+   13                        ORGANIZATION IS LINE SEQUENTIAL.
+   14
+   15                    DATA    DIVISION.
+   16                    FILE    SECTION.
+   17                    FD A-CLASS-F.
+   18                    01 CLASS-A.
+   19                       02 REG-NO-A  PIC 9(6).
+   20                       02 FILLER    PIC X(25).
+   21                    FD B-CLASS-F.
+   22                    01 CLASS-B.
+   23                       02 REG-NO-B  PIC 9(6).
+   24                       02 FILLER    PIC X(25).
+   25                    FD NEW-F.
+   26                    01 NEW-REC  PIC X(31).
+   27
+   28                    WORKING-STORAGE SECTION.
+   29                    77 A-EOF    PIC 9.
+   30                    77 B-EOF    PIC 9.
+   31
+   32                    PROCEDURE DIVISION.
+   33    000002          0000-RTN.
+   34    000005              OPEN INPUT A-CLASS-F B-CLASS-F
+   35                         OUTPUT NEW-F.
+   36    000024              READ A-CLASS-F AT END MOVE 1 TO A-EOF.
+   37    000039              READ B-CLASS-F AT END MOVE 1 TO B-EOF.
+   38    000055              PERFORM 0001-RTN UNTIL A-EOF = 1 AND B-EOF = 1.
+   39    000075              CLOSE A-CLASS-F B-CLASS-F NEW-F.
+   40    000094              STOP RUN.
+   41    000097          0001-RTN.
+   42    000100              IF REG-NO-A < REG-NO-B
+   43                        WRITE NEW-REC FROM CLASS-A
+   44                        PERFORM CLASS-A-RTN
+   45                        ELSE IF REG-NO-A > REG-NO-B
+   46                        WRITE NEW-REC FROM CLASS-B
+   47                        PERFORM CLASS-B-RTN.
+   48    000155          CLASS-A-RTN.
+   49    000158              READ A-CLASS-F AT END MOVE 999999 TO REG-NO-A
+   50                                  MOVE 1 TO A-EOF.
+   51    000182          CLASS-B-RTN.
+   52    000185              READ B-CLASS-F AT END MOVE 999999 TO REG-NO-B
+   53                                  MOVE 1 TO B-EOF.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-10-07  22:28:33    Page 2
+Source file: 9456043                    Options: L
+
+Program Summary Statistics                                                                           WORK-III
+
+
+Read only size:                     590 (X"0000024E") bytes
+Read/write size:                    562 (X"00000232") bytes
+Overlayable segment size:             0 (X"00000000") bytes
+
+Total generated object size:       1152 (X"00000480") bytes
+
+Errors: 0, Warnings: 0, Lines: 53 for program WORK-III.
+
+
+
+Object version level: 1
+

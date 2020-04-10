@@ -1,0 +1,74 @@
+
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-19-07  12:49:00    Page 1
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN
+
+    1                    ID      DIVISION.
+    2                    PROGRAM-ID. '9456043'.
+    3
+    4                    ENVIRONMENT DIVISION.
+    5                    CONFIGURATION   SECTION.
+    6
+    7                    DATA        DIVISION.
+    8                    WORKING-STORAGE SECTION.
+    9                    77 I        PIC 9.
+   10                    77 J        PIC 9.
+   11                    77 ANS      PIC X.
+   12                    77 SALARY   PIC $$$,$$$.
+   13                    01 TABLE1.
+   14                        05 FILLER   PIC X(25) VALUE '0600007000080000900010000'.
+   15                        05 FILLER   PIC X(25) VALUE '0700008000090001000011000'.
+   16                        05 FILLER   PIC X(25) VALUE '0800009000100001100012000'.
+   17                        05 FILLER   PIC X(25) VALUE '1000012000140001600018000'.
+   18                        05 FILLER   PIC X(25) VALUE '1200014000160001800020000'.
+   19                        05 FILLER   PIC X(25) VALUE '1400016000180002000022000'.
+   20                        05 FILLER   PIC X(25) VALUE '1600019000220002500028000'.
+   21                    01 TABLE2  REDEFINES  TABLE1.
+   22                        05 AA OCCURS 7 TIMES.
+   23                        10 MONTH-SALARY OCCURS 5 TIMES PIC 9(5).
+   24
+   25                    PROCEDURE   DIVISION.
+   26    000002          0000-RTN.
+   27    000005              DISPLAY 'JOB HEIGHT:' LINE 5 POSITION 10 ERASE.
+   28    000020              DISPLAY 'JOB LEVEL:' LINE 7 POSITION 10.
+   29    000034              DISPLAY 'MONTHS SALARY:' LINE 9 POSITION 10.
+   30    000050          0001-RTN.
+   31    000053              ACCEPT I LINE 5 POSITION 30 NO BEEP.
+   32    000065              IF I = 0 OR I > 7 DISPLAY 'ERROR' LINE 15 POSITION 10
+   33                            PERFORM 0001-RTN.
+   34    000099          0002-RTN.
+   35    000102              ACCEPT J LINE 7 POSITION 30 NO BEEP.
+   36    000114              IF J = 0 OR J > 5 DISPLAY 'ERROR' LINE 15 POSITION 10
+   37                            GO TO 0002-RTN.
+   38    000147              MOVE MONTH-SALARY(I , J) TO SALARY.
+   39    000161              DISPLAY SALARY LINE 9 POSITION 30.
+   40    000175          0003-RTN.
+   41    000178              DISPLAY 'CONTINUE?(Y/N)' LINE 11 POSITION 30.
+   42    000192              ACCEPT ANS LINE 11 POSITION 45 NO BEEP.
+   43    000204              IF ANS = 'Y'
+   44                            GO TO 0000-RTN
+   45                        ELSE IF ANS = 'N'
+   46                            STOP RUN
+   47                        ELSE
+   48                            DISPLAY 'ERROR' LINE 15 POSITION 10
+   49                        PERFORM 0003-RTN
+   50                        END-IF.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-19-07  12:49:00    Page 2
+Source file: 9456043                    Options: L
+
+Program Summary Statistics                                                                           9456043
+
+
+Read only size:                     686 (X"000002AE") bytes
+Read/write size:                    236 (X"000000EC") bytes
+Overlayable segment size:             0 (X"00000000") bytes
+
+Total generated object size:        922 (X"0000039A") bytes
+
+Errors: 0, Warnings: 0, Lines: 50 for program 9456043.
+
+
+
+Object version level: 6
+

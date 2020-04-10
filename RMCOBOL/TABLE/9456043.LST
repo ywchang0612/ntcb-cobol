@@ -1,0 +1,97 @@
+
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-19-07  12:47:06    Page 1
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN
+
+    1                    ID      DIVISION.
+    2                    PROGRAM-ID. S9456043.
+    3                    ENVIRONMENT DIVISION.
+    4                    CONFIGURATION   SECTION.
+    5                    INPUT-OUTPUT    SECTION.
+    6                    FILE-CONTROL.
+    7                        SELECT A-F ASSIGN TO RANDOM 'A.DAT'
+    8                        ORGANIZATION IS LINE SEQUENTIAL.
+    9                        SELECT O-F ASSIGN TO RANDOM 'I.OUT'
+   10                        ORGANIZATION IS LINE SEQUENTIAL.
+   11                    DATA    DIVISION.
+   12                    FILE    SECTION.
+   13                    FD A-F.
+   14                    01 A-REC.
+   15                       02 A-NO  PIC 9(03).
+   16                       02 A-NM  PIC X(05).
+   17                       02 A-CH  PIC 9(03).
+   18                       02 A-EN  PIC X(03).
+   19                    FD O-F.
+   20                    01 O-REC    PIC X(40).
+   21                    WORKING-STORAGE SECTION.
+   22                    77 EOF  PIC X VALUE 'N'.
+   23                    77 I    PIC 99.
+   24                    01 OUT-REC.
+   25                       02 O-NO  PIC 9(03).
+   26                       02 FILLER    PIC X(02).
+   27                       02 O-NM  PIC X(05).
+   28                       02 FILLER    PIC X(02).
+   29                       02 O-SU  PIC 9(03).
+   30                       02 FILLER    PIC X(02).
+   31                       02 O-CH  PIC 9(03).
+   32                       02 FILLER    PIC X(02).
+   33                       02 O-EN  PIC 9(03).
+   34                       02 FILLER    PIC X(02).
+   35                       02 O-MK  PIC X.
+   36                    01 TABLE1.
+   37                       02 FILLER    PIC X(7) VALUE '171200A'.
+   38                       02 FILLER    PIC X(7) VALUE '166170B'.
+   39                       02 FILLER    PIC X(7) VALUE '160165C'.
+   40                       02 FILLER    PIC X(7) VALUE '156159D'.
+   41                       02 FILLER    PIC X(7) VALUE '151155E'.
+   42                       02 FILLER    PIC X(7) VALUE '000150F'.
+   43                    01 TABLE2 REDEFINES TABLE1.
+   44                       02 AA OCCURS 6 TIMES.
+   45                          03 SCR-L  PIC 9(03).
+   46                          03 SCR-B  PIC 9(03).
+   47                          03 SCR-M  PIC 9(01).
+   48                    PROCEDURE   DIVISION.
+   49    000002          0000-RTN.
+   50    000005              OPEN INPUT  A-F
+   51                         OUTPUT O-F.
+   52    000018              READ A-F AT END MOVE 'Y' TO EOF.
+   53    000033              PERFORM 0001-RTN UNTIL EOF = 'Y'.
+   54    000046              CLOSE A-F O-F.
+   55    000059              STOP RUN.
+   56    000062          0001-RTN.
+   57    000065              MOVE A-NO TO O-NO.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-19-07  12:47:06    Page 2
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN   S9456043
+
+   58    000072              MOVE A-NM TO O-NM.
+   59    000079              MOVE A-CH TO O-CH.
+   60    000086              MOVE A-EN TO O-EN.
+   61    000091              COMPUTE O-SU = O-CH + O-EN.
+   62    000098              PERFORM 0002-RTN VARYING I FROM 1 BY 1 UNTIL I > 6.
+   63    000120              WRITE O-REC FROM OUT-REC.
+   64    000134              READ A-F AT END MOVE 'Y' TO EOF.
+   65    000151          0002-RTN.
+   66    000154              IF O-SU NOT < SCR-L(I) AND O-SU NOT > SCR-B(I)
+   67                           MOVE SCR-M(I) TO O-MK
+   68                        END-IF.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    06-19-07  12:47:06    Page 3
+Source file: 9456043                    Options: L
+
+Program Summary Statistics                                                                           S9456043
+
+
+Read only size:                     554 (X"0000022A") bytes
+Read/write size:                    440 (X"000001B8") bytes
+Overlayable segment size:             0 (X"00000000") bytes
+
+Total generated object size:        994 (X"000003E2") bytes
+
+Errors: 0, Warnings: 0, Lines: 68 for program S9456043.
+
+
+
+Object version level: 6
+

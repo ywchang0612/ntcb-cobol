@@ -1,0 +1,119 @@
+
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-05-07  17:17:20    Page 1
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN
+
+    1                    ID      DIVISION.
+    2                    PROGRAM-ID. 'WORK-II'.
+    3
+    4                    ENVIRONMENT DIVISION.
+    5                    CONFIGURATION   SECTION.
+    6                    INPUT-OUTPUT    SECTION.
+    7                    FILE-CONTROL.
+    8                        SELECT FILE-RECORD ASSIGN TO RANDOM "A.DAT"
+    9                        ORGANIZATION IS LINE SEQUENTIAL.
+   10                        SELECT I-REPORT ASSIGN TO RANDOM 'I.OUT'
+   11                        ORGANIZATION IS LINE SEQUENTIAL.
+   12                        SELECT J-REPORT ASSIGN TO RANDOM 'J.OUT'
+   13                        ORGANIZATION IS LINE SEQUENTIAL.
+   14                        SELECT K-REPORT ASSIGN TO RANDOM 'K.OUT'
+   15                        ORGANIZATION IS LINE SEQUENTIAL.
+   16                    DATA        DIVISION.
+   17                    FILE        SECTION.
+   18                    FD FILE-RECORD
+   19                        LABEL RECORD IS STANDARD.
+   20                    01 STU-REC.
+   21                       03 IN-NO     PIC 9(3).
+   22                       03 IN-NM     PIC X(5).
+   23                       03 IN-CHI        PIC 9(3).
+   24                          88 CHI-A      VALUE 80 THRU 100.
+   25                       03 IN-ENG        PIC 9(3).
+   26                          88 ENG-A      VALUE 80 THRU 100.
+   27                    FD I-REPORT
+   28                        LABEL RECORD IS STANDARD.
+   29                    01 I-REC        PIC X(30).
+   30                    FD J-REPORT
+   31                        LABEL RECORD IS STANDARD.
+   32                    01 J-REC        PIC X(30).
+   33                    FD K-REPORT
+   34                        LABEL RECORD IS STANDARD.
+   35                    01 K-REC        PIC X(30).
+   36
+   37                    WORKING-STORAGE SECTION.
+   38                    01 EOF          PIC 9 VALUE 0.
+   39                    01 SUM-A        PIC 9(3).
+   40                    01 I-OUT.
+   41                       03 I-NO      PIC 9(3).
+   42                       03 FILLER        PIC X VALUE SPACE.
+   43                       03 I-NM      PIC X(5).
+   44                       03 FILLER        PIC X(2) VALUE SPACE.
+   45                       03 I-SUM     PIC 9(3).
+   46                          88 SUMA       VALUE 160 THRU 200.
+   47                       03 FILLER        PIC X(2) VALUE SPACE.
+   48                       03 I-CHI     PIC 9(3).
+   49                       03 FILLER        PIC X(2) VALUE SPACE.
+   50                       03 I-ENG     PIC 9(3).
+   51                          88 ENGA       VALUE 80 THRU 100.
+   52                       03 FILLER        PIC X(2) VALUE SPACE.
+   53                       03 I-MARK        PIC X.
+   54                    01 K-OUT.
+   55                       03 K-NM      PIC X(5).
+   56                       03 FILLER        PIC X VALUE SPACE.
+   57                       03 K-ENG     PIC 9(3).
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-05-07  17:17:20    Page 2
+Source file: 9456043                    Options: L
+
+ LINE   DEBUG     PG/LN -A 1 B..+....2....+....3....+....4....+....5....+....6....+....7..IDENTFCN   WORK-II
+
+   58                    PROCEDURE DIVISION.
+   59    000002          0000-RTN.
+   60    000005              OPEN INPUT  FILE-RECORD
+   61                         OUTPUT I-REPORT J-REPORT K-REPORT.
+   62    000030              READ FILE-RECORD AT END MOVE 1 TO EOF.
+   63    000045              PERFORM 0001-RTN UNTIL EOF = 1.
+   64    000058              CLOSE FILE-RECORD I-REPORT J-REPORT K-REPORT.
+   65    000083              STOP RUN.
+   66    000086          0001-RTN.
+   67    000089              MOVE IN-NO TO I-NO.
+   68    000096              MOVE IN-NM TO I-NM.
+   69    000103              COMPUTE SUM-A = IN-CHI + IN-ENG.
+   70    000110              MOVE SUM-A TO I-SUM.
+   71    000117              MOVE IN-CHI TO I-CHI.
+   72    000124              MOVE IN-ENG TO I-ENG.
+   73    000131              IF CHI-A AND ENG-A
+   74                        MOVE 'A' TO I-MARK
+   75                        END-IF.
+   76    000170              IF NOT CHI-A AND NOT ENG-A
+   77                        MOVE 'B' TO I-MARK
+   78                        END-IF.
+   79    000210              WRITE I-REC FROM I-OUT.
+   80
+   81    000225              IF SUMA
+   82                        WRITE J-REC FROM I-OUT
+   83                        END-IF.
+   84
+   85    000256              IF ENGA
+   86                        MOVE I-NM TO K-NM
+   87                        MOVE I-ENG TO K-ENG
+   88                        WRITE K-REC FROM K-OUT
+   89                        END-IF.
+   90    000302              READ FILE-RECORD AT END MOVE 1 TO EOF.
+RM/COBOL-85 (Version 5.22.00) for DOS 2.00+    04-05-07  17:17:20    Page 3
+Source file: 9456043                    Options: L
+
+Program Summary Statistics                                                                           WORK-II
+
+
+Read only size:                     726 (X"000002D6") bytes
+Read/write size:                    736 (X"000002E0") bytes
+Overlayable segment size:             0 (X"00000000") bytes
+
+Total generated object size:       1462 (X"000005B6") bytes
+
+Errors: 0, Warnings: 0, Lines: 90 for program WORK-II.
+
+
+
+Object version level: 1
+
